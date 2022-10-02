@@ -71,13 +71,15 @@ if not os.path.exists(args.outputDirectory):
     print("<wm_append_clusters_to_anatomical_tracts> Output directory", args.outputDirectory, "does not exist, creating it.")
     os.makedirs(outdir)
 
+# for appending clusters in the tract
 def output_appended_tract(cluster_vtp_list, outputfile):
     appender = vtk.vtkAppendPolyData()
     for c_idx in range(len(cluster_vtp_list)):
         cluster_vtp = cluster_vtp_list[c_idx]
-        pd_cluster = wma.io.read_polydata(cluster_vtp)
+        pd_cluster = wma.io.read_polydata(cluster_vtp) # reading polydata from vtk or vtp from the clusters
 
         vtk_array = vtk.vtkIntArray()
+        # conversion of visual toolkit values to Int values
         vtk_array.SetName('cluster_idx')
         for p_idx in range(0, pd_cluster.GetNumberOfPoints()):
             vtk_array.InsertNextTuple1(int(c_idx))
